@@ -20,6 +20,7 @@ function App() {
   const navigate = useNavigate() 
 
   const [value, setValue] = useState(0);
+  const [currencies, setCurrencies] = useState([])
   const [favoriteCurr, setFavoriteCurr] = useState([])
 
   const navigateHandler = (event, newValue) => {
@@ -36,14 +37,31 @@ function App() {
   } 
 
   const onAddCurr = (curr) => {
+    console.log(curr)
     setFavoriteCurr(currencies => currencies.concat(curr))
+  }
+
+  const onDeleteCurr = (curr) => {
+    setFavoriteCurr(currencies => {
+      return currencies.filter(favcurr => favcurr.Cur_Code != curr.Cur_Code)
+    })
   }
 
   return (
     <div className='app-wrapper'>
       <Routes>
-        <Route path="/" element={<MainPage favoriteCurr={favoriteCurr}/>}></Route>
-        <Route path="/settings" element={<SettingsPage onAddCurr={onAddCurr}/>}></Route>
+        <Route path="/" element={
+          <MainPage 
+          favoriteCurr={favoriteCurr}
+            />}/>
+        <Route path="/settings" element={
+          <SettingsPage 
+            onDeleteCurr={onDeleteCurr} 
+            onAddCurr={onAddCurr}
+            currencies={currencies}
+            setCurrencies={setCurrencies}
+            />
+        }/>
       </Routes>
       <BottomNavigation
         showLabels
